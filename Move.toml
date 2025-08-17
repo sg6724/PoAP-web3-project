@@ -1,15 +1,12 @@
 [package]
 name = "poap_project"
 version = "1.0.0"
-authors = []
 
 [addresses]
+poap_addr = "d97248e5d29be6dd506d19a9ba6d40d7317c183de20aac4facbb025be0a5dfe6"
 
 [dev-addresses]
 
-[dependencies.AptosFramework]
-git = "https://github.com/aptos-labs/aptos-framework.git"
-rev = "mainnet"
-subdir = "aptos-framework"
-
-[dev-dependencies]
+[dependencies]
+AptosFramework = { git = "https://github.com/aptos-labs/aptos-core.git", subdir = "aptos-move/framework/aptos-framework", rev = "mainnet" }
+AptosTokenObjects = { git = "https://github.com/aptos-labs/aptos-core.git", subdir = "aptos-move/framework/aptos-token-objects", rev = "mainnet" }

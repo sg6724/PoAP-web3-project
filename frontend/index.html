@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RiseIn POAP DApp</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <script defer src="https://unpkg.com/aptos/dist/index.umd.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <header class="navbar">
+    <div class="container">
+      <h1 class="logo">RiseIn POAP</h1>
+      <button id="connectBtn" class="btn">Connect Wallet</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="controls">
+      <button id="createEventBtn" class="btn-primary">Create Event</button>
+    </section>
+
+    <section id="eventsSection">
+      <h2>Upcoming Events</h2>
+      <div id="eventsList" class="grid"></div>
+    </section>
+
+    <section id="badgesSection">
+      <h2>My Badges</h2>
+      <div id="badgesList" class="grid"></div>
+    </section>
+  </main>
+
+  <!-- Create Event Modal -->
+  <div id="modalOverlay" class="modal-overlay hidden">
+    <div class="modal">
+      <h3>Create New Event</h3>
+      <input id="evtName" type="text" placeholder="Event Name"/>
+      <textarea id="evtDesc" placeholder="Description"></textarea>
+      <input id="evtLoc" type="text" placeholder="Location"/>
+      <div class="row">
+        <input id="evtStart" type="number" placeholder="Start (unix)"/>
+        <input id="evtEnd"   type="number" placeholder="End (unix)"/>
+      </div>
+      <input id="evtCap" type="number" placeholder="Capacity"/>
+      <div class="row">
+        <button id="submitEvent" class="btn-primary">Submit</button>
+        <button id="closeModal" class="btn-secondary">Cancel</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
