@@ -42,7 +42,8 @@ This is just the beginning! Potential improvements include:
 ---
 
 ## 📜 Contract Address
-<img width="1920" height="977" alt="image" src="https://github.com/user-attachments/assets/abaa6920-69d8-4f1e-8a0c-98ed0aaaf903" />
+<img width="1920" height="1044" alt="image" src="https://github.com/user-attachments/assets/994aa69e-dda0-4b69-9f36-1b00cb72f707" />
+
 
 
 ---
