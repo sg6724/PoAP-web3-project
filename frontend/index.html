@@ -1,54 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>RiseIn POAP DApp</title>
-  <link rel="stylesheet" href="styles.css"/>
-  <script defer src="https://unpkg.com/aptos/dist/index.umd.js"></script>
-  <script defer src="app.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RiseIn POAP - Web3 Community Events</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <header class="navbar">
-    <div class="container">
-      <h1 class="logo">RiseIn POAP</h1>
-      <button id="connectBtn" class="btn">Connect Wallet</button>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="nav-brand">
+                <h2>RiseIn POAP</h2>
+            </div>
+            <div class="nav-actions">
+                <button id="theme-toggle" class="btn btn--secondary theme-btn" aria-label="Toggle theme">
+                    <span class="theme-icon">🌙</span>
+                </button>
+                <button id="connect-wallet" class="btn btn--primary">
+                    Connect Wallet
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Hero Section -->
+            <section class="hero">
+                <div class="hero-content">
+                    <h1>Web3 Community Events</h1>
+                    <p>Collect NFT badges by attending RiseIn Web3 events</p>
+                </div>
+                
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="total-events">0</div>
+                        <div class="stat-label">Total Events</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="my-badges">0</div>
+                        <div class="stat-label">My Badges</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="active-events">0</div>
+                        <div class="stat-label">Active Events</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Action Buttons -->
+            <section class="actions">
+                <button id="create-event-btn" class="btn btn--primary" disabled>
+                    Create Event
+                </button>
+                <button id="refresh-btn" class="btn btn--outline">
+                    Refresh Data
+                </button>
+            </section>
+
+            <!-- Events Section -->
+            <section class="events-section">
+                <div class="section-header">
+                    <h2>Events</h2>
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" data-filter="all">All</button>
+                        <button class="filter-btn" data-filter="active">Active</button>
+                        <button class="filter-btn" data-filter="upcoming">Upcoming</button>
+                    </div>
+                </div>
+                <div id="events-grid" class="events-grid">
+                    <div class="empty-state">
+                        <p>No events available</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- My Badges Section -->
+            <section class="badges-section">
+                <div class="section-header">
+                    <h2>My Badges</h2>
+                </div>
+                <div id="badges-grid" class="badges-grid">
+                    <div class="empty-state">
+                        <p>Connect wallet to view your badges</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Create Event Modal -->
+    <div id="create-event-modal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create New Event</h3>
+                <button class="modal-close" aria-label="Close modal">&times;</button>
+            </div>
+            <form id="create-event-form" class="modal-body">
+                <div class="form-group">
+                    <label class="form-label" for="event-name">Event Name</label>
+                    <input type="text" id="event-name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="event-description">Description</label>
+                    <textarea id="event-description" class="form-control" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="event-location">Location</label>
+                    <input type="text" id="event-location" class="form-control" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="start-time">Start Time</label>
+                        <input type="datetime-local" id="start-time" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="end-time">End Time</label>
+                        <input type="datetime-local" id="end-time" class="form-control" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="max-attendees">Max Attendees</label>
+                    <input type="number" id="max-attendees" class="form-control" min="1" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn--outline" id="cancel-create">Cancel</button>
+                    <button type="submit" class="btn btn--primary">Create Event</button>
+                </div>
+            </form>
+        </div>
     </div>
-  </header>
 
-  <main class="container">
-    <section class="controls">
-      <button id="createEventBtn" class="btn-primary">Create Event</button>
-    </section>
-
-    <section id="eventsSection">
-      <h2>Upcoming Events</h2>
-      <div id="eventsList" class="grid"></div>
-    </section>
-
-    <section id="badgesSection">
-      <h2>My Badges</h2>
-      <div id="badgesList" class="grid"></div>
-    </section>
-  </main>
-
-  <!-- Create Event Modal -->
-  <div id="modalOverlay" class="modal-overlay hidden">
-    <div class="modal">
-      <h3>Create New Event</h3>
-      <input id="evtName" type="text" placeholder="Event Name"/>
-      <textarea id="evtDesc" placeholder="Description"></textarea>
-      <input id="evtLoc" type="text" placeholder="Location"/>
-      <div class="row">
-        <input id="evtStart" type="number" placeholder="Start (unix)"/>
-        <input id="evtEnd"   type="number" placeholder="End (unix)"/>
-      </div>
-      <input id="evtCap" type="number" placeholder="Capacity"/>
-      <div class="row">
-        <button id="submitEvent" class="btn-primary">Submit</button>
-        <button id="closeModal" class="btn-secondary">Cancel</button>
-      </div>
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay hidden">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <p>Processing transaction...</p>
+        </div>
     </div>
-  </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="app.js"></script>
 </body>
 </html>
