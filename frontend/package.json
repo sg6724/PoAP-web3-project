@@ -1,0 +1,40 @@
+{
+  "name": "risein-poap-dapp",
+  "version": "1.0.0",
+  "description": "Decentralized Proof of Attendance Badge (POAP) system on Aptos blockchain",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8080",
+    "dev": "python -m http.server 8080",
+    "deploy": "bash deploy.sh",
+    "interact": "bash interact.sh",
+    "compile": "cd move && aptos move compile --package-dir . --named-addresses poap_addr=0xd97248e5d29be6dd506d19a9ba6d40d7317c183de20aac4facbb025be0a5dfe6",
+    "publish": "cd move && aptos move publish --package-dir . --named-addresses poap_addr=0xd97248e5d29be6dd506d19a9ba6d40d7317c183de20aac4facbb025be0a5dfe6 --profile default"
+  },
+  "keywords": [
+    "aptos",
+    "blockchain",
+    "web3",
+    "poap",
+    "nft",
+    "dapp",
+    "smart-contract"
+  ],
+  "author": "RiseIn Community",
+  "license": "MIT",
+  "devDependencies": {
+    "@aptos-labs/ts-sdk": "^1.15.0"
+  },
+  "dependencies": {},
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/risein/poap-dapp"
+  },
+  "bugs": {
+    "url": "https://github.com/risein/poap-dapp/issues"
+  },
+  "homepage": "https://github.com/risein/poap-dapp#readme"
+}

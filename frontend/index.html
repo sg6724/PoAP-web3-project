@@ -6,130 +6,161 @@
     <title>RiseIn POAP - Web3 Community Events</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Aptos SDK -->
+    <script src="https://unpkg.com/@aptos-labs/ts-sdk@latest/dist/browser/index.js"></script>
 </head>
 <body>
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-content">
             <div class="nav-brand">
-                <h2>RiseIn POAP</h2>
+                <span class="brand-icon">🎟️</span>
+                <span class="brand-text">RiseIn POAP</span>
             </div>
             <div class="nav-actions">
-                <button id="theme-toggle" class="btn btn--secondary theme-btn" aria-label="Toggle theme">
+                <button id="initialize-poap-btn" class="btn btn--ghost btn--sm" title="Initialize POAP System" style="display: none;">
+                    🔧 Init
+                </button>
+                <button id="refresh-events" class="btn btn--ghost btn--sm" title="Refresh Data">
+                    🔄
+                </button>
+                <button id="theme-toggle" class="btn btn--ghost btn--sm" title="Toggle Theme">
                     <span class="theme-icon">🌙</span>
                 </button>
                 <button id="connect-wallet" class="btn btn--primary">
                     Connect Wallet
                 </button>
+                <div id="wallet-info" class="wallet-info" style="display: none;">
+                    <!-- Wallet info will be populated by JavaScript -->
+                </div>
             </div>
         </div>
     </nav>
 
-    <!-- Main Content -->
-    <main class="main-content">
+    <!-- Hero Section -->
+    <section class="hero">
         <div class="container">
-            <!-- Hero Section -->
-            <section class="hero">
-                <div class="hero-content">
-                    <h1>Web3 Community Events</h1>
-                    <p>Collect NFT badges by attending RiseIn Web3 events</p>
-                </div>
+            <div class="hero-content">
+                <h1 class="hero-title">Web3 Community Events</h1>
+                <p class="hero-subtitle">Collect NFT badges by attending RiseIn Web3 events</p>
                 
                 <!-- Stats Cards -->
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <div class="stat-value" id="total-events">0</div>
+                        <div class="stat-number" id="total-events">0</div>
                         <div class="stat-label">Total Events</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value" id="my-badges">0</div>
+                        <div class="stat-number" id="my-badges-count">0</div>
                         <div class="stat-label">My Badges</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value" id="active-events">0</div>
+                        <div class="stat-number" id="active-events">0</div>
                         <div class="stat-label">Active Events</div>
                     </div>
                 </div>
-            </section>
+            </div>
+        </div>
+    </section>
 
-            <!-- Action Buttons -->
-            <section class="actions">
-                <button id="create-event-btn" class="btn btn--primary" disabled>
-                    Create Event
-                </button>
-                <button id="refresh-btn" class="btn btn--outline">
-                    Refresh Data
-                </button>
-            </section>
-
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
             <!-- Events Section -->
-            <section class="events-section">
+            <section class="section">
                 <div class="section-header">
-                    <h2>Events</h2>
-                    <div class="filter-buttons">
-                        <button class="filter-btn active" data-filter="all">All</button>
-                        <button class="filter-btn" data-filter="active">Active</button>
-                        <button class="filter-btn" data-filter="upcoming">Upcoming</button>
-                    </div>
+                    <h2 class="section-title">Events</h2>
+                    <button id="create-event-btn" class="btn btn--primary" disabled>
+                        + Create Event
+                    </button>
                 </div>
+                
+                <!-- Event Filters -->
+                <div class="filter-tabs">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="active">Live</button>
+                    <button class="filter-btn" data-filter="upcoming">Upcoming</button>
+                    <button class="filter-btn" data-filter="past">Past</button>
+                </div>
+                
                 <div id="events-grid" class="events-grid">
                     <div class="empty-state">
-                        <p>No events available</p>
+                        <div class="empty-icon">📅</div>
+                        <h3>No events available</h3>
+                        <p>Connect your wallet to load events from the blockchain</p>
                     </div>
                 </div>
             </section>
 
-            <!-- My Badges Section -->
-            <section class="badges-section">
+            <!-- Badges Section -->
+            <section class="section">
                 <div class="section-header">
-                    <h2>My Badges</h2>
+                    <h2 class="section-title">My Badges</h2>
                 </div>
+                
                 <div id="badges-grid" class="badges-grid">
                     <div class="empty-state">
-                        <p>Connect wallet to view your badges</p>
+                        <div class="empty-icon">🔗</div>
+                        <h3>Connect wallet</h3>
+                        <p>Connect your wallet to view your badges</p>
                     </div>
                 </div>
             </section>
         </div>
     </main>
 
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>Built with ❤️ for Web3 Community Events</p>
+                <p>Powered by Aptos Blockchain</p>
+            </div>
+        </div>
+    </footer>
+
     <!-- Create Event Modal -->
     <div id="create-event-modal" class="modal hidden">
-        <div class="modal-overlay"></div>
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Create New Event</h3>
-                <button class="modal-close" aria-label="Close modal">&times;</button>
+                <h2>Create New Event</h2>
+                <button class="close-modal">×</button>
             </div>
             <form id="create-event-form" class="modal-body">
                 <div class="form-group">
-                    <label class="form-label" for="event-name">Event Name</label>
-                    <input type="text" id="event-name" class="form-control" required>
+                    <label for="event-name">Event Name *</label>
+                    <input type="text" id="event-name" name="event-name" required placeholder="Enter event name">
                 </div>
+                
                 <div class="form-group">
-                    <label class="form-label" for="event-description">Description</label>
-                    <textarea id="event-description" class="form-control" rows="3" required></textarea>
+                    <label for="event-description">Description *</label>
+                    <textarea id="event-description" name="event-description" required placeholder="Describe your event"></textarea>
                 </div>
+                
                 <div class="form-group">
-                    <label class="form-label" for="event-location">Location</label>
-                    <input type="text" id="event-location" class="form-control" required>
+                    <label for="event-location">Location *</label>
+                    <input type="text" id="event-location" name="event-location" required placeholder="Event location or 'Online'">
                 </div>
+                
                 <div class="form-row">
                     <div class="form-group">
-                        <label class="form-label" for="start-time">Start Time</label>
-                        <input type="datetime-local" id="start-time" class="form-control" required>
+                        <label for="event-start-time">Start Date & Time *</label>
+                        <input type="datetime-local" id="event-start-time" name="event-start-time" required>
                     </div>
                     <div class="form-group">
-                        <label class="form-label" for="end-time">End Time</label>
-                        <input type="datetime-local" id="end-time" class="form-control" required>
+                        <label for="event-end-time">End Date & Time *</label>
+                        <input type="datetime-local" id="event-end-time" name="event-end-time" required>
                     </div>
                 </div>
+                
                 <div class="form-group">
-                    <label class="form-label" for="max-attendees">Max Attendees</label>
-                    <input type="number" id="max-attendees" class="form-control" min="1" required>
+                    <label for="event-max-attendees">Max Attendees *</label>
+                    <input type="number" id="event-max-attendees" name="event-max-attendees" required min="1" value="100">
                 </div>
-                <div class="modal-actions">
-                    <button type="button" class="btn btn--outline" id="cancel-create">Cancel</button>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn--secondary close-modal">Cancel</button>
                     <button type="submit" class="btn btn--primary">Create Event</button>
                 </div>
             </form>
@@ -148,5 +179,12 @@
     <div id="toast-container" class="toast-container"></div>
 
     <script src="app.js"></script>
+    
+    <script>
+        // Initialize Aptos namespace for compatibility
+        if (typeof window.Aptos === 'undefined') {
+            window.Aptos = window.AptosSDK || {};
+        }
+    </script>
 </body>
 </html>
