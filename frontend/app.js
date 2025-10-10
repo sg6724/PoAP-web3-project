@@ -1,4 +1,4 @@
-// POAP DApp Application Logic
+// POAP DApp Logic
 class POAPApp {
     constructor() {
         this.config = {

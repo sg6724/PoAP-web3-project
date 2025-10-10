@@ -87,7 +87,7 @@ module risein_poap {
     ) acquires POAPData {
         let now = timestamp::now_seconds();
         assert!(start_time < end_time, EINVALID_TIME_RANGE);
-        // Allow events to start now or in the future (>= instead of >)
+        // Allow events to start now or in the future 
         assert!(start_time >= now, EINVALID_TIME_RANGE);
 
         let addr = signer::address_of(organizer);
